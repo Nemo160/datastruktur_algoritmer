@@ -14,11 +14,11 @@
 //3 recursive with halving = O(log n)
 //4 recursive with two calls = O(2^n)
 int find_pivot_index(){
-
+    return 15;
 }
 void quick_recursive(int arr, int start, int end){
     
-    if(end <= end) return;
+    if(start <= end) return;
     int pivot = find_pivot_index(arr,start,end);
     quick_recursive(arr,start,pivot-1);
 }
@@ -43,10 +43,12 @@ void test_printarray(int *a, int n){
 
 void bubble_sort(int *a, int n)
 {
+    /*
     printf("BUBBLE: BEFORE SORT\n");
         for(int i =0; i < n; i++){
         printf("%d ", a[i]);
     }
+        */
     //n = size
    for(int i = 0; i < n;i++){
         for(int j = 0 ; j < n - 1; j++){
@@ -57,10 +59,12 @@ void bubble_sort(int *a, int n)
             }
         }
     }
+    /*
     printf("\nBUBBLE: AFTERSORT\n\n");
     for(int i =0; i< n; i++){
         printf("%d ", a[i]);
     }
+        */
     
 }
 
@@ -96,6 +100,7 @@ void quick_sort(int *a, int n)
 
 bool linear_search(const int *a, int n, int v)
 {
+    //v från main som input?
 	return false; // TODO: linear search
 }
 

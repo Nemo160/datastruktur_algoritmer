@@ -100,7 +100,6 @@ void ui_run()
 				break;
 			// Bubble sort
 			case 'c':
-				
 				benchmark(bubble_sort_t, best_t, result, RESULT_ROWS);
 				printf("todo> implemenet BE + present results in FE\n");
 				break;			// Invalid input
@@ -113,11 +112,10 @@ void ui_run()
 				benchmark(bubble_sort_t, average_t, result, RESULT_ROWS);
 				break;
 
-
+			//Insertion
 			case 'f':
 				benchmark(insertion_sort_t, best_t, result, RESULT_ROWS);
 				break;
-
 
 			case 'g':
 				benchmark(insertion_sort_t, worst_t, result, RESULT_ROWS);
@@ -126,6 +124,46 @@ void ui_run()
 			
 			case 'h':
 				benchmark(insertion_sort_t, average_t, result, RESULT_ROWS);
+				break;
+
+			//Quick sort
+			case 'i':
+				benchmark(quick_sort_t, best_t, result, RESULT_ROWS);
+				break;
+
+			case 'j':
+				benchmark(quick_sort_t, worst_t, result, RESULT_ROWS);
+				break;
+			
+			case 'k':
+				benchmark(quick_sort_t, average_t, result, RESULT_ROWS);
+				break;
+
+			//Linear  Search
+			case 'l':
+				benchmark(linear_search_t, best_t, result, RESULT_ROWS);
+				break;
+
+			case 'm':
+				benchmark(linear_search_t, worst_t, result, RESULT_ROWS);
+				break;
+
+			case 'n':
+				benchmark(linear_search_t, average_t, result, RESULT_ROWS);
+				break;
+		
+
+			//Binary search
+			case 'o':
+				benchmark(binary_search_t, best_t, result, RESULT_ROWS);
+				break;
+
+			case 'p':
+				benchmark(binary_search_t, worst_t, result, RESULT_ROWS);
+				break;
+
+			case 'q':
+				benchmark(binary_search_t, average_t, result, RESULT_ROWS);
 				break;
 
 			default:
