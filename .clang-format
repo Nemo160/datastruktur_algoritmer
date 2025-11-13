@@ -1,0 +1,13 @@
+BasedOnStyle: LLVM
+BraceWrapping:
+  AfterControlStatement: false
+  AfterFunction: false
+  AfterNamespace: false
+  AfterStruct: false
+  AfterClass: false
+  AfterEnum: false
+  BeforeElse: false
+  BeforeCatch: false
+  BeforeLambdaBody: false
+  AfterUnion: false
+BreakBeforeBraces: Attach

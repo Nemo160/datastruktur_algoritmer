@@ -26,8 +26,7 @@ typedef struct {
 	double time;
 } result_t;
 
-// benchmark benchmarks an algorithm a for a specific case c, writing n results
+// benchmark() benchmarks an algorithm (a) for a specific case (c), writing (n) results
 // to the result buffer buf
 void benchmark(const algorithm_t a, const case_t c, result_t *buf, int n);
-
 #endif
