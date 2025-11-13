@@ -106,10 +106,28 @@ void ui_run()
 				break;			// Invalid input
 
 			case 'd':
-				
 				benchmark(bubble_sort_t, worst_t, result, RESULT_ROWS);
-				printf("WORST CASE");
 				break;
+
+			case 'e':
+				benchmark(bubble_sort_t, average_t, result, RESULT_ROWS);
+				break;
+
+
+			case 'f':
+				benchmark(insertion_sort_t, best_t, result, RESULT_ROWS);
+				break;
+
+
+			case 'g':
+				benchmark(insertion_sort_t, worst_t, result, RESULT_ROWS);
+				break;
+
+			
+			case 'h':
+				benchmark(insertion_sort_t, average_t, result, RESULT_ROWS);
+				break;
+
 			default:
 				show_menu = false;
 				ui_invalid_input();
