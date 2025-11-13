@@ -101,6 +101,7 @@ bool linear_search(const int *a, int n, int v)
 
 bool binary_search(const int *a, int n, int v)
 {
+	//test
 	return false; // TODO: binary search
 }
 
