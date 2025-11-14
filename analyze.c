@@ -11,14 +11,15 @@
 //
 // Public
 //
-void orderded_array(int *arr, int size){
+
+void sorted_array(int *arr, int size){
   for (int i = 0; i < size; i++) {
     arr[i] = i;
   }
 }
-void reverse_order_array(int *arr, int size){
+void reverse_sorted_array(int *arr, int size){
   for (int i = size-1; i >= 0; i--) {
-    arr[i] = size- i;
+    arr[i] = (size-1)- i;
   }
 }
 
@@ -41,7 +42,7 @@ void populate_array(const algorithm_t a, const case_t c, int *arr, int size) {
     case worst_t:
     printf("\nWORST CASE: \n");
       for (int i = size-1; i >= 0; i--) {
-        arr[i] = size- i;
+        arr[i] = (size -1) - i;
       }
 
       return;
@@ -56,19 +57,21 @@ void populate_array(const algorithm_t a, const case_t c, int *arr, int size) {
     if(a == quick_sort_t ){
 
     }
-
   }
-
-
 }
 
 void benchmark(const algorithm_t a, const case_t c, result_t *buf, int n) {
     int size = SIZE_START;
     //n = 1;
     time_t time_start, time_end;
-    for (int j = 0; j < n; j++) {
+    printf("INPUT HERE:\n");
+    int input;
+    input = scanf("%d", &input);
+
+    for (int j = 0; j < 1; j++) {
         int array[size];
         if(a == bubble_sort_t){
+          printf("\nIN BUBBLESORT\n");
           double time_used = 0;
           populate_array(a, c, array, size);
           printf("SIZE: %d\n", size);
@@ -86,14 +89,48 @@ void benchmark(const algorithm_t a, const case_t c, result_t *buf, int n) {
 
         }
         else if(a == insertion_sort_t){
-          //populate_array(a, c, array, size);
+          populate_array(a, c, array, size);
           insertion_sort(array,size);
+        }
+        else if(a == linear_search_t){
+        double time_used = 0;
+
+        sorted_array(array, size);
+        time_start = clock();
+
+        bool found = linear_search(array, size, input);
+        time_end = clock();
+        time_used = ((double)(time_end - time_start)) / CLOCKS_PER_SEC;
+
+        buf[j].time = time_used;
+        buf[j].size = size;
+
+          printf("FOUND HERE: %d\n", found);
+
+        } 
+
+        else if(a == quick_sort_t){
+          reverse_sorted_array(array, size);
+          printf("NONSORTED ARRAY: \n");
+          for(int i =0; i< size;i++){
+            printf("%d ", array[i]);
+          }
+          int low = sizeof(array)/sizeof(array[0]);
+          printf("low %d, array[0]%d, sizeofarray%d\n", low, array[0],sizeof(array));
+          printf("size:%d\n",size);
+          quick_sort(array,0, low-1);
+
+          printf("QUICKSORTED ARRAY\n\n");
+          for(int i =0; i< size;i++){
+            printf("%d ", array[i]);
+          }
+          
         }
   
         size = size * 2;
     }
-
+/*
     for(int i = 0; i < n; i++){
       printf("Size:%d        Time table: %f\n", buf[i].size ,buf[i].time);
-    }
+    }*/
 }
