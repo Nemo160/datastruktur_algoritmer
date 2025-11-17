@@ -92,12 +92,13 @@ void benchmark(const algorithm_t a, const case_t c, result_t *buf, int n) {
   }
   //n=1;
   //time_t time_start,time_end;
+  clock_t start, end;
   for (int j = 0; j < n; j++) {
     check_case(array, size, c, a);
-    time_t time_start = clock();
+    start = clock();
     run_algorithm(array, size, c, a,input);
-    time_t time_end = clock();
-    double time_used = ((double)(time_end - time_start)) / CLOCKS_PER_SEC;
+    end = clock();
+    double time_used = ((double)end - start) / CLOCKS_PER_SEC;
     
     buf[j].time = time_used;
     buf[j].size = size;

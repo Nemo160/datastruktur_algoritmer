@@ -75,10 +75,13 @@ static void ui_menu()
 }
 
 
-void print_resultTEST(result_t *buf, int n){
+void print_resultTEST(result_t *buf, int n, algorithm_t a){
 	ui_line('*',MENU_WIDTH);
+	printf("%d\n", a);
+	ui_line('-',MENU_WIDTH);
+
 	for(int i = 0; i<n;i++){
-		printf("Size: %d        %f\n", buf[i].size, buf[i].time);
+		printf("Size: %d        %lf\n", buf[i].size, buf[i].time);
 	}
 	ui_line('-',MENU_WIDTH);
 }
@@ -109,81 +112,80 @@ void ui_run()
 			// Bubble sort
 			case 'c':
 				benchmark(bubble_sort_t, best_t, result, RESULT_ROWS);
-				print_resultTEST(result,RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS,bubble_sort_t);
 				break;			
 
 			case 'd':
 				benchmark(bubble_sort_t, worst_t, result, RESULT_ROWS);
-				print_resultTEST(result,RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS,bubble_sort_t);
 				break;
 
 			case 'e':
 				benchmark(bubble_sort_t, average_t, result, RESULT_ROWS);
-				print_resultTEST(result,RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS,bubble_sort_t);
 				break;
 
 			//Insertion
 			case 'f':
 				benchmark(insertion_sort_t, best_t, result, RESULT_ROWS);
-				print_resultTEST(result,RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS,insertion_sort_t);
 				break;
 
 			case 'g':
 				benchmark(insertion_sort_t, worst_t, result, RESULT_ROWS);
-				print_resultTEST(result,RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS,insertion_sort_t);
 				break;
 
 			case 'h':
 				benchmark(insertion_sort_t, average_t, result, RESULT_ROWS);
-				print_resultTEST(result,RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS,insertion_sort_t);
 				break;
 
 			//Quick sort
 			case 'i':
 				benchmark(quick_sort_t, best_t, result, RESULT_ROWS);
-				print_resultTEST(result,RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS,quick_sort_t);
 				break;
 
 			case 'j':
 				benchmark(quick_sort_t, worst_t, result, RESULT_ROWS);
-				print_resultTEST(result,RESULT_ROWS);
-				break;
+				print_resultTEST(result,RESULT_ROWS,quick_sort_t);				break;
 			
 			case 'k':
 				benchmark(quick_sort_t, average_t, result, RESULT_ROWS);
-				print_resultTEST(result,RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS,quick_sort_t);
 				break;
 
 			//Linear  Search
 			case 'l':
 				benchmark(linear_search_t, best_t, result, RESULT_ROWS);
-				print_resultTEST(result,RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS,linear_search_t);
 				break;
 
 			case 'm':
 				benchmark(linear_search_t, worst_t, result, RESULT_ROWS);
-				print_resultTEST(result,RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS,linear_search_t);
 				break;
 
 			case 'n':
 				benchmark(linear_search_t, average_t, result, RESULT_ROWS);
-				print_resultTEST(result,RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS,linear_search_t);
 				break;
 
 			//Binary search
 			case 'o':
 				benchmark(binary_search_t, best_t, result, RESULT_ROWS);
-				print_resultTEST(result,RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS,binary_search_t);
 				break;
 
 			case 'p':
 				benchmark(binary_search_t, worst_t, result, RESULT_ROWS);
-				print_resultTEST(result,RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS,binary_search_t);
 				break;
 
 			case 'q':
 				benchmark(binary_search_t, average_t, result, RESULT_ROWS);
-				print_resultTEST(result,RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS,binary_search_t);
 				break;
 
 			default:
