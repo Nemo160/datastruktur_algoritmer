@@ -1,7 +1,6 @@
 #include "ui.h"
 #include "io.h"
 #include "analyze.h"
-
 #include <stdbool.h>
 #include <stdio.h>
 
@@ -67,12 +66,21 @@ static void ui_menu()
 		"Binary search best case",
 		"Binary search worst case",
 		"Binary search average case\n",
-		// TODO: complete menu
+		
 	};
 
 	ui_line('=', MENU_WIDTH);
 	ui_menu_options(options, sizeof(options) / sizeof(char *));
 	ui_line('-', MENU_WIDTH);
+}
+
+
+void print_resultTEST(result_t *buf, int n){
+	ui_line('*',MENU_WIDTH);
+	for(int i = 0; i<n;i++){
+		printf("Size: %d        %f\n", buf[i].size, buf[i].time);
+	}
+	ui_line('-',MENU_WIDTH);
 }
 
 //
@@ -101,68 +109,81 @@ void ui_run()
 			// Bubble sort
 			case 'c':
 				benchmark(bubble_sort_t, best_t, result, RESULT_ROWS);
-				break;			// Invalid input
+				print_resultTEST(result,RESULT_ROWS);
+				break;			
 
 			case 'd':
 				benchmark(bubble_sort_t, worst_t, result, RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS);
 				break;
 
 			case 'e':
 				benchmark(bubble_sort_t, average_t, result, RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS);
 				break;
 
 			//Insertion
 			case 'f':
 				benchmark(insertion_sort_t, best_t, result, RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS);
 				break;
 
 			case 'g':
 				benchmark(insertion_sort_t, worst_t, result, RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS);
 				break;
 
-			
 			case 'h':
 				benchmark(insertion_sort_t, average_t, result, RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS);
 				break;
 
 			//Quick sort
 			case 'i':
 				benchmark(quick_sort_t, best_t, result, RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS);
 				break;
 
 			case 'j':
 				benchmark(quick_sort_t, worst_t, result, RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS);
 				break;
 			
 			case 'k':
 				benchmark(quick_sort_t, average_t, result, RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS);
 				break;
 
 			//Linear  Search
 			case 'l':
 				benchmark(linear_search_t, best_t, result, RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS);
 				break;
 
 			case 'm':
 				benchmark(linear_search_t, worst_t, result, RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS);
 				break;
 
 			case 'n':
 				benchmark(linear_search_t, average_t, result, RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS);
 				break;
-		
 
 			//Binary search
 			case 'o':
 				benchmark(binary_search_t, best_t, result, RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS);
 				break;
 
 			case 'p':
 				benchmark(binary_search_t, worst_t, result, RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS);
 				break;
 
 			case 'q':
 				benchmark(binary_search_t, average_t, result, RESULT_ROWS);
+				print_resultTEST(result,RESULT_ROWS);
 				break;
 
 			default:

@@ -1,48 +1,8 @@
 #include "algorithm.h"
-#include <stdio.h>
 
 //
 // Private
 //
-
-//
-// Public
-//
-
-
-
-
-void bubble_sort(int *a, int n)
-{   
-   for(int i = 0; i < n;i++){
-        for(int j = 0 ; j < n - 1; j++){
-            if(a[j] > a[j+1]){
-                int tmp = a[j];
-                a[j] = a[j+1];
-                a[j+1] = tmp;
-            }
-        }
-    }
-}
-
-void insertion_sort(int *a, int n)
-{
-    /*INSERTION: 
-    1. Börja på element 2 (i=1) och lägg det i temp
-    kontrollera om talet till vänster är mindre än tmp
-    talet är större flytta det till höger. REPEAT
-    */
-    for(int i = 1; i<n;i++){
-        int tmp = a[i];
-        int j = i-1;
-        while(j >=0  && a[j] > tmp){ //medans a[j] är större än a[i]
-            a[j+1] = a[j]; 
-            j--;
-        }
-        a[j+1] = tmp;
-    }
-}
-
 int partition(int *arr, int low, int high){
     /*Nya pivot point blir sista talet i arrayen
     if j< pivot increment i++ and swap i with j.
@@ -69,6 +29,41 @@ int partition(int *arr, int low, int high){
     arr[i+1] = arr[high]; // i+1 är då talet
     arr[high] = tmp;
     return i + 1;
+}
+
+//
+// Public
+//
+
+void bubble_sort(int *a, int n)
+{   
+    for(int i = 0; i < n;i++){
+        for(int j = 0 ; j < n - 1; j++){
+            if(a[j] > a[j+1]){
+                int tmp = a[j];
+                a[j] = a[j+1];
+                a[j+1] = tmp;
+            }
+        }
+    }
+}
+
+void insertion_sort(int *a, int n)
+{
+    /*INSERTION: 
+    1. Börja på element 2 (i=1) och lägg det i temp
+    kontrollera om talet till vänster är mindre än tmp
+    talet är större flytta det till höger. REPEAT
+    */
+    for(int i = 1; i<n;i++){
+        int tmp = a[i];
+        int j = i-1;
+        while(j >=0  && a[j] > tmp){ //medans a[j] är större än a[i]
+            a[j+1] = a[j]; 
+            j--;
+        }
+        a[j+1] = tmp;
+    }
 }
 
 void quick_sort(int *a, int low, int high)
@@ -98,7 +93,6 @@ bool binary_search(const int *a, int n, int v)
 {
     int low = 0; 
     int high = n - 1;
-    printf("high:%d\n",high);
     int middle = (high /2);
 
     while (low <= high) {
