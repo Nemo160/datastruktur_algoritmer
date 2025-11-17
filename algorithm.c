@@ -9,68 +9,11 @@
 // Public
 //
 
-//1 for loop = O(n)
-//2 nested forloop = O(n^2)
-//3 recursive with halving = O(log n)
-//4 recursive with two calls = O(2^n)
-
-int partition(int *arr, int low, int high){
-
-    /*pivot at the end. j at - 1
-    if j< pivot increment i++ and swap j with i
-    if(j<pivot) -> j = i and i=j 
-    if not < then continue
-    */
-    int pivot = arr[high];
-    int i = low-1; 
-    for(int j = low; j< high; j++){
-        if(arr[j]<pivot){
-            //swap(arr[i], arr[j]); might work??
-            i++;
-            int tmp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = tmp;
-        }
-    }
-    int tmp = arr[i+1];
-    arr[i+1] = arr[high];
-    arr[high] = tmp;
-    return i + 1; //return pivot point: i stops where pivot is larger than arr[j].
-}
-
-void swap(int *i, int *j){
-    int tmp = *i;
-    *j = *i;
-    *i = tmp;
-}
 
 
-void test_printarray(int *a, int n){
-    printf("\nIn bubblesort func!\n");
-    printf("First 3: ");
-    for(int i = 0; i < 3; i++)
-    {
-        printf("%d ", a[i]);
-    }
-
-    printf("\nLast 3: ");
-    for(int i = (n - 3); i < n; i++)
-    {
-        printf("%d ", a[i]);
-    }
-
-    printf("\n\n");
-}
 
 void bubble_sort(int *a, int n)
-{
-    
-    printf("BUBBLE: BEFORE SORT\n");
-        for(int i =0; i < n; i++){
-        printf("%d ", a[i]);
-    }
-    
-    //n = size
+{   
    for(int i = 0; i < n;i++){
         for(int j = 0 ; j < n - 1; j++){
             if(a[j] > a[j+1]){
@@ -80,13 +23,6 @@ void bubble_sort(int *a, int n)
             }
         }
     }
-    
-    printf("\nBUBBLE: AFTERSORT\n\n");
-    for(int i =0; i< n; i++){
-        printf("%d ", a[i]);
-    }
-        
-    
 }
 
 void insertion_sort(int *a, int n)
@@ -96,22 +32,43 @@ void insertion_sort(int *a, int n)
     kontrollera om talet till vänster är mindre än tmp
     talet är större flytta det till höger. REPEAT
     */
-    printf("INSERTION: BEFORE SORT\n");
-    for(int i =0; i < n; i++){ printf("%d ", a[i]); }    
-  
     for(int i = 1; i<n;i++){
         int tmp = a[i];
         int j = i-1;
-        while(j >=0  && a[j] > tmp){ 
-            a[j+1] = a[j];
+        while(j >=0  && a[j] > tmp){ //medans a[j] är större än a[i]
+            a[j+1] = a[j]; 
             j--;
         }
         a[j+1] = tmp;
     }
-    printf("\nINSERTION: AFTERSORT\n\n");
-    for(int i =0; i< n; i++){ printf("%d ", a[i]); }
-    
-	// TODO: insertion sort
+}
+
+int partition(int *arr, int low, int high){
+    /*Nya pivot point blir sista talet i arrayen
+    if j< pivot increment i++ and swap i with j.
+    Alltså if(a[j] < pivot) -> i blir j (i=j) och i blir nya j (i=j) 
+    if not < then continue j++
+    */
+    int pivot = arr[high]; //high är slutet av arrayen (för varje subarray)
+    int i = low-1; //a[0]-1
+    for(int j = low; j < high; j++){
+        if(arr[j]<pivot){
+            //swap(arr[i], arr[j]); might work??
+            i++;
+            int tmp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = tmp;
+        }
+    }
+    //i stannar där (pivot > a[i]) men också (pivot < a[i+1])
+    /*Alltså är i+1 platsen där a[high] ska sitta, 
+    vilket också innebär att talet a[i+1] måste byta plats med a[pivot].
+    Slutligen returnerar vi indexen i+1 som får bli vår nya pivot för vänster och höger array vid nästa anrop
+    */
+    int tmp = arr[i+1]; //sätter talet efter i till tmp
+    arr[i+1] = arr[high]; // i+1 är då talet
+    arr[high] = tmp;
+    return i + 1;
 }
 
 void quick_sort(int *a, int low, int high)
@@ -120,18 +77,14 @@ void quick_sort(int *a, int low, int high)
     if(low < high){
         int p = partition(a,low,high);
         /*för left används p-1 som nya pivot point. Mitten - 1 för att få högsta index för vänstra array
-        och för right används n blir nya pivot. Mitten +1 för att få lägsta index på högra*/
+        och för right blir high nya pivot. Mitten +1 för att få lägsta index på högra*/
         quick_sort(a,low,p-1); //left 
         quick_sort(a,p+1,high); //right
     }
-    //high is the value that is being compared. high = a[last index]
-    //low index is the first index of array
-	
 }
 
 bool linear_search(const int *a, int n, int v)
 {
-
     for(int i = 0; i<n; i++){
         if(a[i]== v){
             return true;
@@ -143,10 +96,26 @@ bool linear_search(const int *a, int n, int v)
 
 bool binary_search(const int *a, int n, int v)
 {
+    int low = 0; 
+    int high = n - 1;
+    printf("high:%d\n",high);
+    int middle = (high /2);
 
-    //v = input
-    //
-	//test
+    while (low <= high) {
+        if(v == a[middle]){
+            return true;
+        }
+        else if(v > a[middle]){ //om v är större än middle så vill vi kolla höger
+            low = middle;
+            middle = ((high - low)/2)+low;
+        } 
+    
+        else{   //kontrollera vänster sida då v > middle och v != middle. Leta på vänster.
+            
+            high = middle;; //nya high är 
+            middle /=2;
+        }
+    }
 	return false; // TODO: binary search
 }
 
