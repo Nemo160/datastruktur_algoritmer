@@ -10,7 +10,7 @@ void bubble_sort(int *arr, int n);
 void insertion_sort(int *arr, int n);
 
 // quick_sort sorts an array arr of length n
-void quick_sort(int *arr, int high,int low);
+void quick_sort(int *arr, int n);
 
 // linear_search checks whether a value v is in an array arr of length n
 bool linear_search(const int *arr, int n, int v);
