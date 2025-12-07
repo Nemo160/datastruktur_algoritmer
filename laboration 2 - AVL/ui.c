@@ -20,8 +20,10 @@ void print_tree(BST T)
 	printf("Inorder:\t");	inorder(T,arr);			print_array(arr,size(T));
 	printf("Postorder:\t");	postorder(T,arr);		print_array(arr,size(T));
 	printf("BFS star:\t");bfs(T,arr,max_n);			print_array(arr,max_n-1);
+	//print_array(arr,max_n);
 	free(arr);
 }
+
 //-----------------------------------------------------------------------------
 // prints the contents of integer array a from 0 up to size
 //-----------------------------------------------------------------------------

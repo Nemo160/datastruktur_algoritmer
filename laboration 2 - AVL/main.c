@@ -8,7 +8,7 @@ void usage(char* s)
 int main(int argc, char** argv)
 {
 	int opt;
-  	bool echo = false;
+	bool echo = false;
 	char mode;
 	while ((opt = getopt(argc, argv, "hem:")) != -1) {
 		switch (opt) {
