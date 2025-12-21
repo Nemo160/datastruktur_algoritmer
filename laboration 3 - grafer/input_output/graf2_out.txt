@@ -1,0 +1,104 @@
+INFO: Running in directed mode
+********************************
+m: menu
+v: view
+q: quit
+
+a: add node
+b: add edge
+
+d: delete node
+r: delete edge
+
+f: find node
+g: find edge
+
+W: Warshall
+F: Floyd
+D: Dijkstra
+P: Prim
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+menu> a
+Enter value to be added> a
+97
+menu> v
+    |  a  
+----+-----
+   a|  *  
+
+node cardinality: 1
+edge cardinality: 0
+menu> a
+Enter value to be added> b
+98
+menu> v
+    |  a    b  
+----+----------
+   a|  *    *  
+   b|  *    *  
+
+node cardinality: 2
+edge cardinality: 0
+menu> a
+Enter value to be added> c
+99
+menu> v
+    |  a    b    c  
+----+---------------
+   a|  *    *    *  
+   b|  *    *    *  
+   c|  *    *    *  
+
+node cardinality: 3
+edge cardinality: 0
+menu> b
+Enter from> a
+Enter to> b
+Enter weight> 1
+menu> v
+    |  a    b    c  
+----+---------------
+   a|  *    1    *  
+   b|  *    *    *  
+   c|  *    *    *  
+
+node cardinality: 3
+edge cardinality: 1
+menu> b
+Enter from> a
+Enter to> c
+Enter weight> 5
+menu> v
+    |  a    b    c  
+----+---------------
+   a|  *    1    5  
+   b|  *    *    *  
+   c|  *    *    *  
+
+node cardinality: 3
+edge cardinality: 2
+menu> b
+Enter from> b
+Enter to> c
+Enter weight> 2
+menu> v
+    |  a    b    c  
+----+---------------
+   a|  *    1    5  
+   b|  *    *    2  
+   c|  *    *    *  
+
+node cardinality: 3
+edge cardinality: 3
+menu> D
+Dijkstra
+Enter start node> a
+d: [  0,   1,   3]
+e: [  -,   a,   b]
+menu> P
+Prim
+Enter start node> a
+d: [inf,   1,   2]
+e: [  -,   a,   b]
+menu> q
+Quitting...

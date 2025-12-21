@@ -1,0 +1,96 @@
+INFO: Running in directed mode
+********************************
+m: menu
+v: view
+q: quit
+
+a: add node
+b: add edge
+
+d: delete node
+r: delete edge
+
+f: find node
+g: find edge
+
+W: Warshall
+F: Floyd
+D: Dijkstra
+P: Prim
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+menu> v
+Graph is empty
+node cardinality: 0
+edge cardinality: 0
+menu> f
+Graph is empty
+menu> a
+Enter value to be added> a
+97
+menu> f
+Enter value to search for> a
+97
+a is a member
+menu> d
+Enter value to be removed> a
+97
+menu> v
+Graph is empty
+node cardinality: 0
+edge cardinality: 0
+menu> a
+Enter value to be added> a
+97
+menu> a
+Enter value to be added> b
+98
+menu> v
+    |  a    b  
+----+----------
+   a|  *    *  
+   b|  *    *  
+
+node cardinality: 2
+edge cardinality: 0
+menu> b
+Enter from> a
+Enter to> b
+Enter weight> 1
+menu> v
+    |  a    b  
+----+----------
+   a|  *    1  
+   b|  *    *  
+
+node cardinality: 2
+edge cardinality: 1
+menu> r
+Enter from> a
+Enter to> b
+menu> v
+    |  a    b  
+----+----------
+   a|  *    *  
+   b|  *    *  
+
+node cardinality: 2
+edge cardinality: 0
+menu> d
+Enter value to be removed> a
+97
+menu> v
+    |  b  
+----+-----
+   b|  *  
+
+node cardinality: 1
+edge cardinality: 0
+menu> d
+Enter value to be removed> b
+98
+menu> v
+Graph is empty
+node cardinality: 0
+edge cardinality: 0
+menu> q
+Quitting...
