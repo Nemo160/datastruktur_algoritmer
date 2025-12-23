@@ -9,9 +9,9 @@ pedge _rem_edge(pedge edges, char to);
 void remove_all_edges_to(pnode G, char name);
 void remove_all_edges_from(pnode G, char name);
 
-//own functions
-pedge helper_remove_edges_to(pedge E, char name);
-
+//own prototypes
+pedge helper_remove_to(pedge E, char name);
+pedge helper_remove_from(pedge E);
 
 // create_node: creates node with name nname
 pnode create_node(char nname)
@@ -87,30 +87,28 @@ pnode node_cons(pnode first, pnode second)
 //           in graph, nothing is done
 pnode add_node(pnode G, char nname)
 {
-
-	
 	return is_empty(G) ? create_node(nname) :
 	nname > get_name(G) ? node_cons(create_node(nname), G) :
 	nname < get_name(G) ? node_cons(G,create_node(nname)) :
 	G;
-	
-	/*if(!G){
-		return create_node(nname);
-	}
-	else if(nname > G->name){
-		return node_cons(create_node(nname),G);
-	}
-	else if(nname < G->name){
-		return node_cons(G,create_node(nname));
-	}
-	else
-	return G;*/
 }
 // rem_node: removes node with name name from adjacency list G
 //           if node does not exist, nothing happens
 pnode rem_node(pnode G, char name)
 {
-	// TODO
+
+	if(is_empty(G)){
+		return NULL;
+	}
+	if(get_name(G) == name){
+		
+		pnode next = G->next_node;
+		remove_all_edges_to(G,name);
+		remove_all_edges_from(G,name);
+		free(G);
+		return next;
+	}
+	G->next_node = rem_node(G->next_node, name);
 	return G;
 }
 // get_node: returns pointer to node with name name from adjacency list G
@@ -176,31 +174,33 @@ pedge edge_cons(pedge first, pedge second)
 // upd_edge: updates edge E to new weight
 pedge upd_edge(pedge E, double weight)
 {
-	if(E){
-		E->weight = weight;
+	if(!E){
+		return NULL;
 	}
+	E->weight = weight;
 	return E;
 }
 // _add_edge: creates and connects new edge to edge-list
 pedge _add_edge(pedge E, char to, double weight)
 {
 	if(edge_empty(E)) {
-		return create_edge(to,weight);;
+		return create_edge(to,weight);
 	}
 
-	pedge current = E;
-	while(current){
-		if(current->to == to){
-			current->weight = weight;
-			return E;
-		}
-		current = current->next_edge;
+	if(get_to(E) > to){
+		pedge new_edge = create_edge(to,weight);
+		new_edge->next_edge = E;
+		return new_edge;
+	}
+	else if(get_to(E) == to){
+		E->weight = weight;
+		return E;
 	}
 
-	pedge new_edge = create_edge(to, weight);
-	new_edge->next_edge = E;
-	return new_edge;
-	//DONE
+	else{
+		E->next_edge = _add_edge(E->next_edge, to, weight);
+		return E;
+	}
 }
 
 // add_edge: adds an edge to G by finding correct start node
@@ -210,10 +210,11 @@ void add_edge(pnode G, char from, char to, double weight)
 	if(is_empty(G)){
 		return;
 	}
-		if(G->name == from){ //if start node
-			G->edges = _add_edge(G->edges,to,weight);
-			return;
-		}
+
+	if(get_name(G) == from){ //if start node
+		G->edges = _add_edge(G->edges,to,weight);
+		return;
+	}
 	add_edge(G->next_node, from, to, weight);
 	//DONE
 }	
@@ -221,29 +222,18 @@ void add_edge(pnode G, char from, char to, double weight)
 // _find_edge: finds edge in edge-list
 bool _find_edge(pedge E, char to)
 {
-	pedge current = E;
-	while(current){
-		if(current->to == to){
-			return true;
-		}
-		current = current->next_edge;
-	}
-	return false;
-	//DONE
+	return edge_empty(E) ? false :
+	get_to(E) == to ? true :
+	_find_edge(E->next_edge,to);
 }
 
 // find_edge: returns true if edge between from and to exists, false otherwise
 bool find_edge(pnode G, char from, char to)
 {
-	if(is_empty(G)){
-		return false;
-	}
-	if(G->name == from){
-		return _find_edge(G->edges,to);
-	}
-	return find_edge(G->next_node, from, to);
+	return is_empty(G) ? false :
+	get_name(G) == from ? _find_edge(G->edges,to) :
+	find_edge(G->next_node, from, to);
 	//DONE
-	
 }
 // _edge_cardinality: returns the number of edges from one node
 int _edge_cardinality(pedge E)
@@ -267,33 +257,64 @@ int edge_cardinality(pnode G)
 //              source node
 int _self_loops(pedge E, char src)
 {
-
-	// TODO
-	return 0;
+	if(edge_empty(E)){
+		return 0;
+	}
+	int count = 0;
+	if(get_to(E) == src){
+		count = 1;
+	}
+	return count + _self_loops(E->next_edge, src);
+	//DONE
 }
 // self_loops: counts the number of self-loops, i.e. edges to and from
 //             the same node
 int self_loops(pnode G)
 {
-
-	// TODO
-	return 0;
+	if(is_empty(G)){
+		return 0;
+	}
+	return _self_loops(G->edges,G->name) + self_loops(G->next_node);
+	//DONE
 }
 // _rem_edge: removes edge from edge-list
 pedge _rem_edge(pedge E, char to)
 {
+	if(!E){
+		return NULL;
+	}
+	if(get_to(E) == to){
+		pedge next = E->next_edge;
+		free(E);
+		return next;
+	}
 
-	// TODO
+	pedge prev = E;
+	pedge current = E->next_edge;
+	//walk down
+	while(current){
+		if(get_to(current) == to){
+			prev->next_edge = current->next_edge;
+			free(current);
+			return E;	
+		}
+		prev = current;
+		current = current->next_edge;
+	}
+	//walk list keep track of previous edge and current edge
+	//find to and link previous->next_edge to current->next_edge
+	//free current
+	//return start edge
+	// DONE
 	return E;
 }
 // rem_edge: removes edge from G
 void rem_edge(pnode G, char from, char to)
 {
-
 	if(is_empty(G)){
 		return;
 	}
-	if(G->name == from){
+	if(get_name(G) == from){
 		G->edges = _rem_edge(G->edges, to);
 		return;
 	}
@@ -301,26 +322,13 @@ void rem_edge(pnode G, char from, char to)
 // DONE
 }
 
-pedge helper_remove_edges_to(pedge E, char name){
-	if(!E){
-		return NULL;
-	}
-
-	if(E->to == name){
-		pedge next = E->next_edge;
-		free(E);
-		return helper_remove_edges_to(next,name);
-	}
-	E->next_edge = helper_remove_edges_to(E->next_edge,name);
-	return E;
-}
 // remove_all_edges_to: removes all edges going towards node with name name
 void remove_all_edges_to(pnode G, char name)
 {
 	if(is_empty(G)){
 		return;
 	}
-	G->edges = helper_remove_edges_to(G->edges, name);
+	G->edges = helper_remove_to(G->edges,name);	
 	remove_all_edges_to(G->next_node,name);
 	// DONE
 }
@@ -330,14 +338,8 @@ void remove_all_edges_from(pnode G, char name)
 	if(is_empty(G)){
 		return;
 	}
-	if(G->name == name){
-		pedge e = G->edges;
-		while(e){
-			pedge tmp = G->edges;
-			e = e->next_edge;
-			free(tmp);
-		}
-		G->edges = NULL;
+	if(get_name(G) == name){
+		G->edges = helper_remove_from(G->edges);
 		return;
 	}
 	remove_all_edges_from(G->next_node,name);
@@ -346,35 +348,27 @@ void remove_all_edges_from(pnode G, char name)
 // node_cardinality: returns the number of nodes in G
 int node_cardinality(pnode G)
 {
-	if(is_empty(G)){
-		return 0;
-	}
-	int count = 0;
-	pnode current_node = G;
-	while(current_node){
-		count++;
-		current_node = current_node->next_node;
-	}
-	// DONE??
-	return count;
+	return is_empty(G) ? 0 :
+	1 + node_cardinality(G->next_node); 
 }
 // name_to_pos: returns position of node with name c, -1 if not found
 int name_to_pos(pnode G, char c)
 {
+	
 	if(is_empty(G)){
 		return -1;
 	}
 	int i = 0;
 	pnode current_node = G;
 	while(current_node){
-		if(current_node-> name == c){
+		if(get_name(current_node) == c){
 			return i;
 		}
 		current_node = current_node->next_node;
 		i++;
-	}
-	//DONE
+	}	
 	return -1;
+	//DONE
 }
 // pos_to_name: returns name of node at position pos in G
 char pos_to_name(pnode G, int pos)
@@ -390,7 +384,6 @@ char pos_to_name(pnode G, int pos)
 		current_node = current_node->next_node;
 		pos--;
 	}
-	
 	return '-';
 	//DONE
 	
@@ -411,5 +404,32 @@ void list_to_matrix(pnode G, double matrix[MAXNODES][MAXNODES])
 		}
 		curr_node = curr_node->next_node;
 	}
-	// TODO
+	// TODO? done maybe
+}
+
+
+//helper functions
+pedge helper_remove_from(pedge E){
+	if(edge_empty(E)){
+		return NULL;
+	}
+	
+	helper_remove_from(E->next_edge);
+	free(E);
+	return NULL;
+}
+
+
+pedge helper_remove_to(pedge E, char name){
+	if(edge_empty(E)){
+		return NULL;
+	}
+	if(E->to == name){
+		pedge next = E->next_edge;
+		free(E);
+		return helper_remove_to(next, name);
+	}
+
+	E->next_edge = helper_remove_to(E->next_edge, name);
+	return E;
 }
