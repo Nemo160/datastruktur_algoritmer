@@ -419,7 +419,6 @@ pedge helper_remove_from(pedge E){
 	return NULL;
 }
 
-
 pedge helper_remove_to(pedge E, char name){
 	if(edge_empty(E)){
 		return NULL;
