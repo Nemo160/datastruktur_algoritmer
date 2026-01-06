@@ -77,8 +77,9 @@ pnode set_pi(pnode G, char pi)
 // node_cons: connects two nodes in adjacency list
 pnode node_cons(pnode first, pnode second)
 {
-	if (is_empty(first))
+	if (is_empty(first)){
 		return NULL;
+	}
 	first->next_node = second;
 	return first;
 }
@@ -87,10 +88,27 @@ pnode node_cons(pnode first, pnode second)
 //           in graph, nothing is done
 pnode add_node(pnode G, char nname)
 {
+/*
 	return is_empty(G) ? create_node(nname) :
 	nname > get_name(G) ? node_cons(create_node(nname), G) :
 	nname < get_name(G) ? node_cons(G,create_node(nname)) :
-	G;
+	add_node(G->next_node,nname);
+*/
+	if(is_empty(G)){
+		printf("IN IS EMPTY\n");
+		return create_node(nname);
+	}
+	if(nname == get_name(G)){
+		return G;
+	}
+	//ersätter om den är lesser than??
+	if(nname < get_name(G)){
+		pnode new = create_node(nname);
+		new->next_node = G;
+		return new;
+	}
+	G->next_node = add_node(G->next_node), nname;
+	return G;
 }
 // rem_node: removes node with name name from adjacency list G
 //           if node does not exist, nothing happens
@@ -291,7 +309,6 @@ pedge _rem_edge(pedge E, char to)
 
 	pedge prev = E;
 	pedge current = E->next_edge;
-	//walk down
 	while(current){
 		if(get_to(current) == to){
 			prev->next_edge = current->next_edge;

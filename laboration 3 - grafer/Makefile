@@ -1,6 +1,6 @@
 CFLAGS = -Wall
 # Remove this -lm flag on Mac
-LDLIBS = -lm
+#LDLIBS = -lm
 
 adjlist:		adjlist.o algorithm.o main.o ui.o
 				gcc $(CFLAGS) -o adjlist adjlist.o algorithm.o ui.o main.o $(LDLIBS)

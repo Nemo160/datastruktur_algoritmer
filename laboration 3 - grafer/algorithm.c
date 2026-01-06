@@ -39,6 +39,7 @@ double min(double a, double b)
 //--------------------------------------------------------------------------
 int Q_insert(queue Q, pnode u, int index)
 {
+	
 	// TODO
 	return 0;
 }
