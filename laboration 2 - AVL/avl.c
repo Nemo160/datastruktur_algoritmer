@@ -2,7 +2,7 @@
 // avl.c - AVL-tree based on binary search tree (bst.h/bst.c)
 //=============================================================================
 #include "avl.h"
-#define DEBUG 1
+#define DEBUG 0
 //=============================================================================
 // local prototypes
 //-----------------------------------------------------------------------------
@@ -13,6 +13,7 @@ static AVL dlr(AVL T);
 static int bf(AVL T);
 static int height_AVL(AVL T);
 static int max_height_AVL(int L, int R);
+static AVL AVL_findMinRem(AVL T);
 //=============================================================================
 // Public functions, exported via .h-file
 //-----------------------------------------------------------------------------
@@ -37,8 +38,37 @@ AVL avl_add(AVL T, int val)
 AVL avl_rem(AVL T, int val)
 {
 	if(DEBUG)printf("avl_rem (%d)\n",val);
-	// TODO
-	return T;
+	if(!T){
+		return NULL;
+	}
+        //searching för val
+    if(val < get_val(T)){
+		AVL new_tree = cons(avl_rem(get_LC(T),val), T,  get_RC(T));
+        return balance(new_tree);
+    }
+    if(val > get_val(T))
+    {
+		AVL new_tree = cons(get_LC(T), T, avl_rem(get_RC(T), val));
+		return balance(new_tree);
+    }
+
+	if(!get_RC(T) && !get_LC(T)){ //no child nodes
+        return NULL;
+    }
+        
+	if(!get_LC(T)){  //one child node return existing child)
+        return get_RC(T);
+    }
+        
+	if(!get_RC(T)){
+		return get_LC(T);
+	}
+
+		//two children 
+	AVL tmp = AVL_findMinRem(get_RC(T));
+	set_val(T,get_val(tmp));
+	AVL subtree = cons(get_LC(T), T, avl_rem(get_RC(T), get_val(tmp)));
+	return balance(subtree);
 }
 //-----------------------------------------------------------------------------
 // balance: balances the AVL tree T if needed
@@ -62,6 +92,16 @@ AVL balance(AVL T)
 //=============================================================================
 // Private functions, for local use only
 //-----------------------------------------------------------------------------
+static AVL AVL_findMinRem(AVL T) //copy from bst
+{
+    while(get_LC(T))
+    {
+        T = get_LC(T);
+    }
+
+    return T;
+} 
+
 static AVL srr(AVL T)
 {
 	if(DEBUG)printf("srr\n");

@@ -88,26 +88,19 @@ pnode node_cons(pnode first, pnode second)
 //           in graph, nothing is done
 pnode add_node(pnode G, char nname)
 {
-/*
-	return is_empty(G) ? create_node(nname) :
-	nname > get_name(G) ? node_cons(create_node(nname), G) :
-	nname < get_name(G) ? node_cons(G,create_node(nname)) :
-	add_node(G->next_node,nname);
-*/
+
 	if(is_empty(G)){
-		printf("IN IS EMPTY\n");
 		return create_node(nname);
 	}
 	if(nname == get_name(G)){
 		return G;
 	}
-	//ersätter om den är lesser than??
 	if(nname < get_name(G)){
 		pnode new = create_node(nname);
 		new->next_node = G;
 		return new;
 	}
-	G->next_node = add_node(G->next_node), nname;
+	G->next_node = add_node(G->next_node, nname);
 	return G;
 }
 // rem_node: removes node with name name from adjacency list G
@@ -201,24 +194,10 @@ pedge upd_edge(pedge E, double weight)
 // _add_edge: creates and connects new edge to edge-list
 pedge _add_edge(pedge E, char to, double weight)
 {
-	if(edge_empty(E)) {
-		return create_edge(to,weight);
-	}
-
-	if(get_to(E) > to){
-		pedge new_edge = create_edge(to,weight);
-		new_edge->next_edge = E;
-		return new_edge;
-	}
-	else if(get_to(E) == to){
-		E->weight = weight;
-		return E;
-	}
-
-	else{
-		E->next_edge = _add_edge(E->next_edge, to, weight);
-		return E;
-	}
+	return 	!E ? create_edge(to, weight) :
+			to < E->to	? edge_cons(create_edge(to, weight), E):
+			to > E->to	? edge_cons(E, _add_edge(E->next_edge, to, weight)):
+        E;
 }
 
 // add_edge: adds an edge to G by finding correct start node
@@ -231,9 +210,11 @@ void add_edge(pnode G, char from, char to, double weight)
 
 	if(get_name(G) == from){ //if start node
 		G->edges = _add_edge(G->edges,to,weight);
-		return;
 	}
-	add_edge(G->next_node, from, to, weight);
+    else{
+        add_edge(G->next_node, from, to, weight);
+    }
+
 	//DONE
 }	
 
@@ -298,6 +279,10 @@ int self_loops(pnode G)
 // _rem_edge: removes edge from edge-list
 pedge _rem_edge(pedge E, char to)
 {
+		//walk list keep track of previous edge and current edge
+	//find to and link previous->next_edge to current->next_edge
+	//free current
+	//return start edge
 	if(!E){
 		return NULL;
 	}
@@ -318,10 +303,7 @@ pedge _rem_edge(pedge E, char to)
 		prev = current;
 		current = current->next_edge;
 	}
-	//walk list keep track of previous edge and current edge
-	//find to and link previous->next_edge to current->next_edge
-	//free current
-	//return start edge
+
 	// DONE
 	return E;
 }
@@ -371,19 +353,14 @@ int node_cardinality(pnode G)
 // name_to_pos: returns position of node with name c, -1 if not found
 int name_to_pos(pnode G, char c)
 {
-	
-	if(is_empty(G)){
-		return -1;
-	}
-	int i = 0;
-	pnode current_node = G;
-	while(current_node){
-		if(get_name(current_node) == c){
-			return i;
+	int counter = 0;
+	for(pnode tmp = G; tmp; tmp = tmp->next_node){
+		if(tmp->name == c){
+			return counter;
 		}
-		current_node = current_node->next_node;
-		i++;
-	}	
+		else
+			counter++;
+	}
 	return -1;
 	//DONE
 }
@@ -408,20 +385,12 @@ char pos_to_name(pnode G, int pos)
 // list_to_pos: creates adjacency matrix from adjacency list
 void list_to_matrix(pnode G, double matrix[MAXNODES][MAXNODES])
 {
-	pnode curr_node = G;
-	while(curr_node){
-		int i = name_to_pos(G, curr_node->name);
-
-	//	matrix[i][i] = 0;
-		pedge e = curr_node->edges;
-		while(e){
-			int j = name_to_pos(G, e->to);
-			matrix[i][j] = e->weight;
-			e = e->next_edge;
+	for(pnode node = G; node; node = node->next_node){
+		for(pedge edge = node->edges; edge; edge=edge->next_edge){
+			matrix[name_to_pos(G, node->name)][name_to_pos(G, edge->to)] = edge->weight;
 		}
-		curr_node = curr_node->next_node;
 	}
-	// TODO? done maybe
+	// DONE
 }
 
 

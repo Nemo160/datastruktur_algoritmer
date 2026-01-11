@@ -11,7 +11,7 @@ static void _preorder(BST T, int* pos, int* a);
 static void _inorder(BST node, int* a, int* i);
 static void _postorder(BST node, int* a, int* i);
 static int max_height(int l, int r);
-
+static BST BST_findMinRem(BST T);
 
 //-----------------------------------------------------------------------------
 // public functions, exported through bst.h
@@ -38,25 +38,45 @@ BST bst_add(BST T, int v)
 //-----------------------------------------------------------------------------
 // bst_rem: removes the value val from the BST (if it exists)
 //-----------------------------------------------------------------------------
-BST bst_rem(BST T, int val)
+
+
+	BST bst_rem(BST T, int val)
 {
-	if(!T)
-		return T;
-		
-	while(T){
-		if(val < get_val(T)){
-			return cons(rem(get_LC(T),val),T,get_RC(T));
-		}
-		if(val > get_val(T)){
-			return cons(get_LC(T), T, rem(get_RC(T), val));
-		}
-		else{
-			set_val(T,X);
-		}
+    if(!T){
+		return NULL;
 	}
-    return cons(get_LC(T), T, rem(get_RC(T), get_val(T)));}
-	// TODO
-	
+        //Searching för val
+        if(val < get_val(T))
+        {
+            return cons(bst_rem(get_LC(T),val), T,  get_RC(T));
+        }
+        if(val > get_val(T))
+        {
+			return cons(get_LC(T), T, bst_rem(get_RC(T), val));
+        }
+    
+        //cases:
+        if(!get_RC(T) && !get_LC(T))    //no child nodes return null)
+        {
+            return NULL;
+        }
+        
+		if(!get_LC(T))    //one child node return existing child)
+        {
+            return get_RC(T);
+        }
+        
+		if(!get_RC(T))
+        {
+			return get_LC(T);
+		}
+		//two children 
+		BST tmp = BST_findMinRem(get_RC(T));
+		set_val(T,get_val(tmp));
+
+		return cons(get_LC(T), T, bst_rem(get_RC(T), get_val(tmp)));
+}
+
 
 
 void preorder(BST T, int* a)
@@ -90,7 +110,8 @@ void bfs(BST T, int* a, int max)
 		a[i]= X;
 	}
 	if(!T) return;
-	BST Q[max];
+
+	BST Q[max*2];
 	int front = 0, back = 0;
 	Q[back++] = T;
 	int i = 0;
@@ -129,15 +150,16 @@ bool is_member(BST T, int val)
 			T = get_RC(T);
 		}
 	}
-	return 	false;
+	return false;
 }
 //-----------------------------------------------------------------------------
 // height: returns height of BST T
 //-----------------------------------------------------------------------------
 int height(BST T)
 {
-	if(!T) 
-	return 0;
+	if(!T){
+		return 0;
+	}
 
 	int h_left = height(get_LC(T));
 	int h_right = height(get_RC(T));
@@ -149,9 +171,10 @@ int height(BST T)
 //-----------------------------------------------------------------------------
 int size(BST T)
 {
-	if(!T)
+	if(!T){
 		return 0;
-
+	}
+		
 	return 1 + size(get_LC(T)) +size(get_RC(T));
 }
 
@@ -197,5 +220,15 @@ static int max_height(int L, int R){
 	else 
 		return R;
 }
+
+static BST BST_findMinRem(BST T)
+{
+    while(get_LC(T))
+    {
+        T = get_LC(T);
+    }
+
+    return T;
+} 
 
 

@@ -1,4 +1,3 @@
-
 // Data Structures and Algorithms (DSA) UI for Graph (MBl 2024)
 #include "ui.h"
 #include "algorithm.h"

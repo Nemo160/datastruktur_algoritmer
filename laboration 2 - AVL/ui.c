@@ -20,7 +20,6 @@ void print_tree(BST T)
 	printf("Inorder:\t");	inorder(T,arr);			print_array(arr,size(T));
 	printf("Postorder:\t");	postorder(T,arr);		print_array(arr,size(T));
 	printf("BFS star:\t");bfs(T,arr,max_n);			print_array(arr,max_n-1);
-	//print_array(arr,max_n);
 	free(arr);
 }
 
@@ -42,10 +41,40 @@ void print_array(int* a, int size)
 // prints a tree, represented by the BFS order star array a of size maxnodes
 // in a 2-dimensional way
 //-----------------------------------------------------------------------------
+void print_gap(int gap){
+	for(int s = 0; s < gap; s++){
+		printf(" ");
+	}
+}
 void print_2d(int* a, int maxnodes)
 {
 	printf("\nTree 2d\n");
-	// TODO
+	/*max_n = pow(2,height(T)) i maxnodes som i princip är (maxnodes = 2^h - 1)  
+	math 101 bring down the exponent dvs lös för h -> log2(maxnodes -1 ) = h */
+	int h = log2(maxnodes+1);
+	int i = 0;
+	int level = 0;
+	while(level < h && i < maxnodes){
+		int nodes_level = pow(2, level);
+		int gap_one = pow(2, h - level);
+		int gap_two = pow(2, h - level+1);
+		//printf("\t");
+		print_gap(gap_one);
+		for(int j = 0; j < nodes_level && i < maxnodes; j++){
+			
+			if(a[i] != X){
+				printf("%d", a[i]);				
+			}
+			else{
+				printf("*");
+			}
+			print_gap(gap_two);
+			i++;
+		}
+		printf("\n");
+		level++;
+	}
+	
 	printf("\n");
 }
 //-----------------------------------------------------------------------------
