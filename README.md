@@ -33,6 +33,3 @@ C
   graph problems
 - Reasoning about algorithm correctness and complexity
 
-## How to run
-
-_(add your actual build/run command(s) here — one per lab if they're separate programs)_
